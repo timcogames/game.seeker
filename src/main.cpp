@@ -1,6 +1,13 @@
+#include <sway/glx11/xscreenconnection.h>
 #include <sway/glx11/canvas.h>
+#include <sway/ois.h>
 #include <sway/core.h>
 #include <sway/math.h>
+
+#include <application.h>
+
+#include <boost/shared_ptr.hpp> // boost::shared_ptr
+#include <boost/make_shared.hpp> // boost::make_shared
 
 using namespace sway;
 
@@ -13,8 +20,24 @@ int main(int argc, char * argv[]) {
 	params.fullscreen = false;
 	params.resizable = true;
 
-	glx11::Canvas * canvas = glx11::createSurface(params);
+	auto connection = boost::make_shared<glx11::XScreenConnection>();
+	auto canvas = boost::make_shared<glx11::Canvas>(connection, params);
+
 	canvas->show();
+
+	ois::InputManager * inputManager = new ois::InputManager(connection->getDisplay(), canvas->getWindowHandle());
+	ois::Keyboard * keyboard = static_cast<ois::Keyboard *>(inputManager->createDevice(ois::kDeviceType_Keyboard));
+	ois::Mouse * mouse = static_cast<ois::Mouse *>(inputManager->createDevice(ois::kDeviceType_Mouse));
+	
+	canvas->addEventBinding(KeyPress, boost::bind(&ois::Keyboard::notifyKeyPressed, keyboard, _1));
+	canvas->addEventBinding(KeyRelease, boost::bind(&ois::Keyboard::notifyKeyReleased, keyboard, _1));
+	canvas->addEventBinding(MotionNotify, boost::bind(&ois::Mouse::notifyMouseMove, mouse, _1));
+	canvas->addEventBinding(ButtonPress, boost::bind(&ois::Mouse::notifyMouseButtonDown, mouse, _1));
+	canvas->addEventBinding(ButtonRelease, boost::bind(&ois::Mouse::notifyMouseButtonUp, mouse, _1));
+
+	Application * app = new Application();
+	keyboard->setListener(app);
+	mouse->setListener(app);
 
 	while (canvas->eventLoop(true)) {
 		canvas->getContext()->makeCurrent();
@@ -23,6 +46,6 @@ int main(int argc, char * argv[]) {
 		canvas->getContext()->doneCurrent();
 	}
 
-	delete canvas;
+	delete app;
 	return 0;
 }
