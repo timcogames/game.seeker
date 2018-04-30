@@ -10,3 +10,6 @@
 [submodule "modules/sway.module_ois-x11"]
 	path = modules/sway.module_ois-x11
 	url = git://github.com/timcogames/sway.module_ois-x11.git
+[submodule "modules/sway.module_graphics"]
+	path = modules/sway.module_graphics
+	url = git://github.com/timcogames/sway.module_graphics.git

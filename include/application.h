@@ -1,4 +1,5 @@
-#pragma once
+#ifndef APPLICATION_H
+#define APPLICATION_H
 
 #include <sway/ois.h>
 
@@ -6,7 +7,20 @@ using namespace sway;
 
 class Application : public ois::KeyboardListener, public ois::MouseListener {
 public:
+	/*!
+	 * \brief
+	 *   Конструктор класса.
+	 *
+	 *   Выполняет инициализацию нового экземпляра класса.
+	 */
 	Application();
+
+	/*!
+	 * \brief
+	 *   Деструктор класса.
+	 *
+	 *   Освобождает захваченные ресурсы.
+	 */
 	~Application();
 
 	virtual void onKeyPressed(const ois::KeyboardEventArgs & event) override;
@@ -19,3 +33,5 @@ public:
 
 	virtual void onMouseMove(const ois::MouseEventArgs & event) override;
 };
+
+#endif // APPLICATION_H

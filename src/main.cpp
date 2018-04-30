@@ -3,6 +3,7 @@
 #include <sway/ois.h>
 #include <sway/core.h>
 #include <sway/math.h>
+#include <sway/graphics.h>
 
 #include <application.h>
 
@@ -38,6 +39,8 @@ int main(int argc, char * argv[]) {
 	Application * app = new Application();
 	keyboard->setListener(app);
 	mouse->setListener(app);
+
+	graphics::RenderSubsystem * render = new graphics::RenderSubsystem();
 
 	while (canvas->eventLoop(true)) {
 		canvas->getContext()->makeCurrent();

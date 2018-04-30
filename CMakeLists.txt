@@ -27,6 +27,7 @@ include_directories(${GAME_SEEKER_DIR}/modules/sway.module_core/include)
 include_directories(${GAME_SEEKER_DIR}/modules/sway.module_math/include)
 include_directories(${GAME_SEEKER_DIR}/modules/sway.module_platform-glx11/include)
 include_directories(${GAME_SEEKER_DIR}/modules/sway.module_ois-x11/include)
+include_directories(${GAME_SEEKER_DIR}/modules/sway.module_graphics/include)
 
 file(GLOB_RECURSE GAME_SEEKER_HEADERS ${GAME_SEEKER_DIR}/include/*.*)
 file(GLOB_RECURSE GAME_SEEKER_SOURCE ${GAME_SEEKER_DIR}/src/*.*)
@@ -45,10 +46,11 @@ endif()
 add_subdirectory(modules/sway.module_core)
 add_subdirectory(modules/sway.module_platform-glx11)
 add_subdirectory(modules/sway.module_ois-x11)
+add_subdirectory(modules/sway.module_graphics)
 
 add_executable(${GAME_SEEKER_PROJECT_NAME} ${GAME_SEEKER_SOURCE})
-add_dependencies(${GAME_SEEKER_PROJECT_NAME} module_glx11 module_ois module_core)
+add_dependencies(${GAME_SEEKER_PROJECT_NAME} module_graphics module_glx11 module_ois module_core)
 
-target_link_libraries(${GAME_SEEKER_PROJECT_NAME} module_glx11 module_ois module_core GL X11 Boost::system Boost::filesystem Boost::thread)
+target_link_libraries(${GAME_SEEKER_PROJECT_NAME} module_graphics module_glx11 module_ois module_core GL X11 Boost::system Boost::filesystem Boost::thread)
 
 set_target_properties(${GAME_SEEKER_PROJECT_NAME} PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
