@@ -3,7 +3,9 @@
 
 #include <stdio.h>
 
-Application::Application() {
+Application::Application()
+	: _quit(true) {
+
 	// Empty
 }
 
@@ -12,35 +14,26 @@ Application::~Application() {
 }
 
 void Application::onKeyPressed(const ois::KeyboardEventArgs & event) {
-	printf("key pressed: %i\n", event.keycode);
+	if (event.keycode == ois::KeyCodes::kKeyCode_Q)
+		_quit = false;
 }
 
 void Application::onKeyReleased(const ois::KeyboardEventArgs & event) {
-	printf("key released: %i\n", event.keycode);
+	// Empty
 }
 
 void Application::onMouseButtonDown(const ois::MouseEventArgs & event) {
-	if (event.button == 1)
-		printf("Left mouse down\n");
-	else if (event.button == 2)
-		printf("Middle mouse down\n");
-	else if (event.button == 3)
-		printf("Right mouse down\n");
-	else if (event.button == 4)
-		printf("Mouse scroll up\n");
-	else if (event.button == 5)
-		printf("Mouse scroll down\n");
+	// Empty
 }
 
 void Application::onMouseButtonUp(const ois::MouseEventArgs & event) {
-	if (event.button == 1)
-		printf("Left mouse up\n");
-	else if (event.button == 2)
-		printf("Middle mouse up\n");
-	else if (event.button == 3)
-		printf("Right mouse up\n");
+	// Empty
 }
 
 void Application::onMouseMove(const ois::MouseEventArgs & event) {
-	printf("Mouse X: %i, Y: %i\n", event.x, event.y);
+	// Empty
+}
+
+bool Application::isQuit() const {
+	return _quit;
 }

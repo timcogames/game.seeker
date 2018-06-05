@@ -3,6 +3,7 @@
 #include <sway/ois.h>
 #include <sway/core.h>
 #include <sway/math.h>
+#include <sway/gapi.h>
 #include <sway/graphics.h>
 
 #include <application.h>
@@ -25,6 +26,9 @@ int main(int argc, char * argv[]) {
 	auto canvas = boost::make_shared<glx11::Canvas>(connection, params);
 
 	canvas->show();
+	canvas->getContext()->makeCurrent();
+
+	gapi::Extensions::define();
 
 	ois::InputManager * inputManager = new ois::InputManager(connection->getDisplay(), canvas->getWindowHandle());
 	ois::Keyboard * keyboard = static_cast<ois::Keyboard *>(inputManager->createDevice(ois::kDeviceType_Keyboard));
@@ -42,7 +46,7 @@ int main(int argc, char * argv[]) {
 
 	graphics::RenderSubsystem * render = new graphics::RenderSubsystem();
 
-	while (canvas->eventLoop(true)) {
+	while (canvas->eventLoop(app->isQuit())) {
 		canvas->getContext()->makeCurrent();
 
 		canvas->getContext()->present();

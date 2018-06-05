@@ -32,6 +32,11 @@ public:
 	virtual void onMouseButtonUp(const ois::MouseEventArgs & event) override;
 
 	virtual void onMouseMove(const ois::MouseEventArgs & event) override;
+
+	bool isQuit() const;
+
+private:
+	bool _quit;
 };
 
 #endif // APPLICATION_H
