@@ -40,11 +40,11 @@ int main(int argc, char * argv[]) {
 	canvas->addEventBinding(ButtonPress, boost::bind(&ois::Mouse::notifyMouseButtonDown, mouse, _1));
 	canvas->addEventBinding(ButtonRelease, boost::bind(&ois::Mouse::notifyMouseButtonUp, mouse, _1));
 
+	graphics::RenderSubsystem * render = new graphics::RenderSubsystem();
+
 	Application * app = new Application();
 	keyboard->setListener(app);
 	mouse->setListener(app);
-
-	graphics::RenderSubsystem * render = new graphics::RenderSubsystem();
 
 	while (canvas->eventLoop(app->isQuit())) {
 		canvas->getContext()->makeCurrent();
