@@ -1,4 +1,4 @@
-# game.seeker [![Discord](https://discordapp.com/api/guilds/402238411639095297/widget.png)](https://discord.gg/vCMcgwQ)
+# game.seeker
 
 [![BCH compliance](https://bettercodehub.com/edge/badge/timcogames/game.​seeker?branch=master)](https://bettercodehub.com/)
 
