@@ -2,6 +2,8 @@
 #define APPLICATION_H
 
 #include <sway/ois.h>
+#include <sway/gapi.h>
+#include <sway/graphics.h>
 
 using namespace sway;
 
@@ -37,6 +39,7 @@ public:
 
 private:
 	bool _quit;
+	graphics::Material * _material;
 };
 
 #endif // APPLICATION_H

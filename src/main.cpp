@@ -6,6 +6,7 @@
 #include <sway/gapi.h>
 #include <sway/graphics.h>
 
+#include <framework.h>
 #include <application.h>
 
 #include <boost/shared_ptr.hpp> // boost::shared_ptr
@@ -16,9 +17,9 @@ using namespace sway;
 int main(int argc, char * argv[]) {
 	glx11::WindowInitialParams params;
 	params.title = "seeker";
-	params.sizes[glx11::kWindowSize] = math::TSize<s32_t>(800, 600);
-	params.sizes[glx11::kWindowSize_Min] = math::TSize<s32_t>(640, 480);
-	params.sizes[glx11::kWindowSize_Max] = math::TSize<s32_t>(1024, 768);
+	params.sizes[glx11::kWindowSize] = math::size2i_t(800, 600);
+	params.sizes[glx11::kWindowSize_Min] = math::size2i_t(640, 480);
+	params.sizes[glx11::kWindowSize_Max] = math::size2i_t(1024, 768);
 	params.fullscreen = false;
 	params.resizable = true;
 
@@ -40,11 +41,11 @@ int main(int argc, char * argv[]) {
 	canvas->addEventBinding(ButtonPress, boost::bind(&ois::Mouse::notifyMouseButtonDown, mouse, _1));
 	canvas->addEventBinding(ButtonRelease, boost::bind(&ois::Mouse::notifyMouseButtonUp, mouse, _1));
 
-	graphics::RenderSubsystem * render = new graphics::RenderSubsystem();
-
-	Application * app = new Application();
-	keyboard->setListener(app);
-	mouse->setListener(app);
+	auto framework = boost::make_shared<Framework>(); 
+	auto app = boost::make_shared<Application>();
+	
+	keyboard->setListener(app.get());
+	mouse->setListener(app.get());
 
 	while (canvas->eventLoop(app->isQuit())) {
 		canvas->getContext()->makeCurrent();
@@ -53,6 +54,5 @@ int main(int argc, char * argv[]) {
 		canvas->getContext()->doneCurrent();
 	}
 
-	delete app;
 	return 0;
 }
