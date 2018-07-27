@@ -6,12 +6,12 @@
 Application::Application()
 	: _quit(true) {
 	graphics::MaterialInitialInfo materialInitialInfo;
-	materialInitialInfo.vsoInfo.type = gapi::kShaderType_Vertex;
+	materialInitialInfo.vsoInfo.type = gapi::ShaderType_t::kVertex;
 	materialInitialInfo.vsoInfo.source = 
 		"void main(void) {" \
 		"gl_Position = vec4(0.0, 0.0, 0.0, 1.0);" \
 		"}";
-	materialInitialInfo.fsoInfo.type = gapi::kShaderType_Fragment;
+	materialInitialInfo.fsoInfo.type = gapi::ShaderType_t::kFragment;
 	materialInitialInfo.fsoInfo.source = 
 		"void main() {" \
 		"gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);" \

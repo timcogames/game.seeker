@@ -17,9 +17,9 @@ using namespace sway;
 int main(int argc, char * argv[]) {
 	glx11::WindowInitialParams params;
 	params.title = "seeker";
-	params.sizes[glx11::kWindowSize] = math::size2i_t(800, 600);
-	params.sizes[glx11::kWindowSize_Min] = math::size2i_t(640, 480);
-	params.sizes[glx11::kWindowSize_Max] = math::size2i_t(1024, 768);
+	params.sizes[core::detail::toUnderlying(glx11::WindowSize_t::kOrigin)] = math::size2i_t(800, 600);
+	params.sizes[core::detail::toUnderlying(glx11::WindowSize_t::kMin)] = math::size2i_t(640, 480);
+	params.sizes[core::detail::toUnderlying(glx11::WindowSize_t::kMax)] = math::size2i_t(1024, 768);
 	params.fullscreen = false;
 	params.resizable = true;
 
