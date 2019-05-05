@@ -11,25 +11,47 @@ void PlayState::enter() {
 	printf("PlayState::enter\n");
 
 	auto context = static_cast<game::Framework *>(getContext());
+
 	auto keyboard = context->getInput()->getDevice<ois::Keyboard>();
-
 	keyboard->setListener(this);
-
 	context->getCanvas()->addEventBinding(KeyPress, boost::bind(&ois::Keyboard::notifyKeyPressed, keyboard, _1));
 	context->getCanvas()->addEventBinding(KeyRelease, boost::bind(&ois::Keyboard::notifyKeyReleased, keyboard, _1));
 
-	graphics::MaterialInitialInfo materialInitialInfo;
-	materialInitialInfo.vsoInfo.type = gapi::ShaderType_t::kVertex;
-	materialInitialInfo.vsoInfo.code = 
-		"void main(void) {" \
-			"gl_Position = vec4(0.0, 0.0, 0.0, 1.0);" \
-		"}";
-	materialInitialInfo.fsoInfo.type = gapi::ShaderType_t::kFragment;
-	materialInitialInfo.fsoInfo.code = 
+	auto renderQueue = getSubsystem<graphics::RenderSubsystem>()->getQueueByIdx(0);
+	auto renderSubqueue = renderQueue->getSubqueues(graphics::RenderSubqueueGroup_t::kOpaque)[0];
+
+	gapi::ShaderCreateInfoSet shaderCreateInfoSet;
+	shaderCreateInfoSet.vs.type = gapi::ShaderType_t::kVertex;
+	shaderCreateInfoSet.vs.code = 
+		"attribute vec3 attr_position;" \
 		"void main() {" \
-			"gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);" \
+		"	gl_Position = vec4(attr_position, 1.0);" \
+	 	"}";
+	shaderCreateInfoSet.fs.type = gapi::ShaderType_t::kFragment;
+	shaderCreateInfoSet.fs.code = 
+		"void main() {" \
+		"	gl_FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);" \
 		"}";
-	_material = boost::make_shared<graphics::Material>(materialInitialInfo);
+	_material = std::make_shared<graphics::Material>(shaderCreateInfoSet);
+
+	auto data = std::make_shared<graphics::VertexData>(3);
+	auto channel = data->createChannel<math::vec3f_t>(gapi::VertexSemantic_t::kPosition);
+	
+	auto d0 = math::vec3f_t(-0.5f,-0.5f, 0.0f);
+	channel->addAnyData(d0.data());
+	auto d1 = math::vec3f_t( 0.5f,-0.5f, 0.0f);
+	channel->addAnyData(d1.data());
+	auto d2 = math::vec3f_t( 0.0f, 0.5f, 0.0f);
+	channel->addAnyData(d2.data());
+	
+	gapi::BufferCreateInfoSet bufferCreateInfoSet;
+	bufferCreateInfoSet.vb.desc.target = gapi::BufferTarget_t::kArray;
+	bufferCreateInfoSet.vb.desc.usage = gapi::BufferUsage_t::kStatic;
+	bufferCreateInfoSet.vb.desc.byteStride = sizeof(math::VertexPosition);
+	bufferCreateInfoSet.vb.desc.capacity = data->getVertexCount();
+	bufferCreateInfoSet.vb.data = data->getRaw();
+
+	_staticMesh = std::make_shared<graphics::StaticMesh>(renderSubqueue, _material, data, bufferCreateInfoSet);
 }
 
 void PlayState::exit() {

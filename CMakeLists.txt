@@ -1,11 +1,11 @@
 # Проверяем версию CMake
-cmake_minimum_required(VERSION 3.10.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.14.3 FATAL_ERROR)
 
 # Мета-информация о проекте
 set(META_PROJECT_NAME game_seeker)
 set(META_VERSION_MAJOR 0)
-set(META_VERSION_MINOR 3)
-set(META_VERSION_PATCH 8)
+set(META_VERSION_MINOR 4)
+set(META_VERSION_PATCH 10)
 set(META_VERSION ${META_VERSION_MAJOR}.${META_VERSION_MINOR}.${META_VERSION_PATCH})
 
 project(${META_PROJECT_NAME} C CXX)
@@ -44,15 +44,19 @@ find_package(OpenGL REQUIRED)
 find_package(X11 REQUIRED)
 
 set(Boost_USE_STATIC_LIBS ON)
-set(BOOST_COMPONENTS system filesystem thread)
-find_package(Boost 1.58 REQUIRED COMPONENTS ${BOOST_COMPONENTS})
-if(NOT Boost_FOUND)
-	message(FATAL_ERROR "Fatal error: Boost (version >= 1.58) required.")
-else()
-	message(STATUS "Boost includes: ${Boost_INCLUDE_DIRS}")
-	message(STATUS "Boost libs: ${Boost_LIBRARIES}")
+set(Boost_NO_SYSTEM_PATHS TRUE)
+set(BOOST_COMPONENTS system filesystem)
+set(BOOST_INCLUDEDIR "${BOOST_ROOT}/")
+set(BOOST_LIBRARYDIR "${BOOST_ROOT}/lib")
 
-	include_directories(${Boost_INCLUDE_DIRS})
+find_package(Boost 1.69.0 REQUIRED COMPONENTS ${BOOST_COMPONENTS})
+if(NOT Boost_FOUND)
+	message(FATAL_ERROR "Fatal error: Boost (version >= 1.69.0) required.")
+else()
+	message(STATUS "Boost includes: ${BOOST_INCLUDEDIR}")
+	message(STATUS "Boost libs: ${BOOST_LIBRARYDIR}")
+
+	include_directories(${BOOST_INCLUDEDIR})
 endif()
 
 set(MODULE_LIBRARIES libmodule_game libmodule_graphics libmodule_gapi_gl libmodule_platform_glx11 libmodule_ois_x11 libmodule_core)
@@ -65,4 +69,4 @@ add_subdirectory(modules/sway.module_game)
 
 add_executable(${META_PROJECT_NAME} ${GAME_SEEKER_SOURCE})
 add_dependencies(${META_PROJECT_NAME} ${MODULE_LIBRARIES})
-target_link_libraries(${META_PROJECT_NAME} ${MODULE_LIBRARIES} ${GLX11_LIBRARIES} ${Boost_LIBRARIES} ${CMAKE_DL_LIBS})
+target_link_libraries(${META_PROJECT_NAME} ${MODULE_LIBRARIES} ${GLX11_LIBRARIES} ${BOOST_LIBRARIES} ${CMAKE_DL_LIBS})

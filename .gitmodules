@@ -22,3 +22,6 @@
 [submodule "modules/sway.module_game"]
 	path = modules/sway.module_game
 	url = git://github.com/timcogames/sway.module_game.git
+[submodule "modules/sway.module_gui"]
+	path = modules/sway.module_gui
+	url = git://github.com/timcogames/sway.module_gui.git

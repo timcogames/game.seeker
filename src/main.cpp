@@ -13,6 +13,7 @@ int main(int argc, char * argv[]) {
 	framework->getInput()->registerDevice<ois::Keyboard>();
 	framework->getInput()->registerDevice<ois::Mouse>();
 	framework->startup(MenuState::getInstance());
+	//framework->startup(PlayState::getInstance());
 	framework->run();
 	return 0;
 }

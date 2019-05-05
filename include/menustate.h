@@ -8,7 +8,7 @@
 
 using namespace sway;
 
-class MenuState : public game::fsm::IStateBase, public ois::InputListener {
+class MenuState : public game::fsm::AStateBase, public ois::InputListener {
 public:
 	static MenuState _instance;
 	static MenuState * getInstance() {

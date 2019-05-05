@@ -8,7 +8,7 @@
 
 using namespace sway;
 
-class PlayState : public game::fsm::IStateBase, public ois::InputListener {
+class PlayState : public game::fsm::AStateBase, public ois::InputListener {
 public:
 	static PlayState _instance;
 	static PlayState * getInstance() {
@@ -54,7 +54,8 @@ public:
 	#pragma endregion
 
 private:
-	boost::shared_ptr<graphics::Material> _material;
+	graphics::MaterialRef_t _material;
+	graphics::StaticMeshRef_t _staticMesh;
 };
 
 #endif // PLAYSTATE_H
